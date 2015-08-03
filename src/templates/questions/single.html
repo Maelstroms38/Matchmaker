@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<form method='POST' action='' > {% csrf_token %}
+<h1>{{ instance.text }}</h1>
+
+{{ user_answer.user }}
+
+<input type='hidden' name='question_id' value='{{instance.id}}' />
+
+<h3>Your answer</h3>
+{% for ans in instance.answer_set.all %}
+<input type ='radio' name='answer_id' value='{{ ans.id }}' /> {% if user_answer.my_answer.id == ans.id %}checked=checked{% endif %} {{ ans.text }} <br/>
+{% endfor %}
+<br />
+Skill Level: {{ form.importance_level }}
+<h3>Tutor's answer</h3>
+{% for ans in instance.answer_set.all %}
+<input type ='radio' name='tutor_answer_id' value='{{ ans.id }}' {% if user_answer.my_answer.id == ans.id %}checked=checked{% endif %} /> {{ ans.text }} <br/>
+{% endfor %}
+<input type='radio' name='tutor_answer_id' value='-1' {% if user_answer.tutor_answer %}checked=checked {% endif %} /> No Experience<br>
+<br/>
+Skill Level: {{ form.tutor_importance_level }}
+<br>
+<input type='submit' value="Save and Continue" />
+
+</form>
+{% endblock %}
